@@ -1,6 +1,7 @@
 <?php
 //inicializar una sesion
 session_start();
+require_once "../.secret.php";
   $alert = '';
 //se crea una condicion en donde se verifica que si hay una sesion activa no se podra ir a login permanece en la pagina principal 
 if ($_SESSION['user']!=""&&$_SESSION['user']!=null&&$_SESSION['user']!="acceso") {
@@ -19,20 +20,30 @@ if ($_SESSION['user']!=""&&$_SESSION['user']!=null&&$_SESSION['user']!="acceso")
       require_once "../Modelo/Conexion.php";
       $usuario = $_POST['usuario'];
       $pass = $_POST['clave'];
-      $abr = new Conexion("localhost","laboratorio","acceso","Login01.");
+      $abr = new Conexion($host,$db,$cuenta,$password);
       $conectar=$abr->getCon();
       if(!$conectar){
         echo("Error de cuenta o contraseña");
         return;
       }else{
-        $sql = "SELECT * FROM cuenta WHERE usuario = '$usuario' and password = '$pass'";
-        $res = $abr->ejecutar($sql);
+        $sql = "SELECT * FROM cuenta WHERE usuario = '$usuario'";
+        try{
+          $res = $abr->ejecutar($sql);
+        }
+        catch(Exception $e)
+        {
+          echo(var_dump($e));
+        }
+        
         if(!$res){
             printf("Errormessage: %s\n", mysqli_error($abr->getCon()));
         }
         if (mysqli_num_rows($res) > 0) {
+          //$cuenta = mysqli_fetch_assoc($res);
+          $row = mysqli_fetch_assoc($res);
+          if(password_verify($pass, $row["password"]))
+          {
             echo("Acceso exitoso");
-            $row = mysqli_fetch_assoc($res);
             $idcuenta = $row['idcuenta'];
             $sqlempleado = "SELECT * FROM empleado where idcuenta = $idcuenta";
             $result = $abr->ejecutar($sqlempleado);
@@ -42,19 +53,19 @@ if ($_SESSION['user']!=""&&$_SESSION['user']!=null&&$_SESSION['user']!="acceso")
                 $puesto = $row2['puesto'];
                 switch($puesto){
                     case "Director operativo":
-                        $_SESSION['user']="directoroperativo";
-	                    $_SESSION['pass']="Prueba01.";
+                        $_SESSION['user']=$cuentaDO;
+	                    $_SESSION['pass']=$passwordDO;
                         break;
                     case "Recepcionista":
-                        $_SESSION['user']="recepcion";
-	                    $_SESSION['pass']="Recepcion01.";
+                        $_SESSION['user']=$cuentaRecepcion;
+	                    $_SESSION['pass']=$passwordRcp;
                         break;
                     case "Laboratorio";
-                        $_SESSION['user']="laboratorio";
-	                    $_SESSION['pass']="Laboratorio01..";
+                        $_SESSION['user']=$cuentaDO;
+	                    $_SESSION['pass']=$passwordDO;
                     break;
-                    default: $_SESSION['user']="directoroperativo";
-                            $_SESSION['pass']="Prueba01.";
+                    default: $_SESSION['user']=$cuentaDO;
+                            $_SESSION['pass']=$passwordDO;
                             break;
                 }
                 $_SESSION['idempleado']=$row2['idempleado'];
@@ -62,6 +73,7 @@ if ($_SESSION['user']!=""&&$_SESSION['user']!=null&&$_SESSION['user']!="acceso")
               } else {
                 echo "0 results";
               }
+          }
         }else{
             echo("Error de cuenta o contraseña");
         }

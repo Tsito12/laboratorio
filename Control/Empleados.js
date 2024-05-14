@@ -54,7 +54,7 @@ $(document).ready(function(){
                 return myXhr;
               },
               success:function(r){
-                if(r=="Datos guardados correctamente"||r=="Datos Editados correctamente"){
+                if(r=="Datos guardados correctamente"||r=="Datos editados correctamente"){
                   $('form')[0].reset();
                   alert(r);
                   document.getElementById("accion").value="guardar";
@@ -201,7 +201,7 @@ $(document).ready(function(){
   }
 
   function verificarTelefono(){
-    let formato = / ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$ /;
+    let formato = /[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}/;
     return(document.getElementById("telefono").value.match(formato));
   }
   
@@ -212,7 +212,7 @@ $(document).ready(function(){
   }
 
   function verificarRFC(){
-    let formato = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+    let formato = /([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])/;
     return(document.getElementById("rfc").value.match(formato))
   }
   

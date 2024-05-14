@@ -17,7 +17,7 @@ $(document).ready(function(){
       
     });
     */
-    $('#accion').val("pruebaXD");
+    $('#accion').val("guardar");
     /*
     $('#idestudio').on('change', function(){
         let idestudio = $('#idestudio').val();
@@ -33,54 +33,15 @@ $(document).ready(function(){
     });
     */
 
-    
-
-      $('#guardarResultado').on('click', function(){
+    $('#imagen1').on('change', function(){
+        var idorden = $('#idorden').val();
+        var idestudio = $('#idestudio').val();
+        var accion = $('#accion').val();
+        $('#accion').val("subirImg1");
+          var imagen = document.getElementById("imagen1").value;
+          console.log(imagen);
           //var datos = new FormData();
           //datos.append("imagen",imagen);
-          if(camposVacios()){
-            alert("Favor de llenar los campos necesarios");
-            return;
-          }
-          
-          var datos;
-          var idestudios = [];
-          var resultados = [];
-          var notas = [];
-          var estudios = document.getElementsByClassName("idestudio");
-          var iresultados = document.getElementsByClassName("resultado");
-          var inotas = document.getElementsByClassName("nota");
-          var idOrden = document.getElementById("idorden").value;
-          for(i = 0;i<estudios.length;i++){
-            idestudios.push(estudios[i].value);
-            resultados.push(iresultados[i].value);
-            notas.push(inotas[i].value);
-          }
-          datos = {
-            accion : "prueba XD",
-            idorden : idOrden,
-            estudios : idestudios,
-            resultados : resultados,
-            notas : notas
-
-          }
-          $.post("../Control/Recepcion.php",
-              datos,
-              function(data,status){
-                  if(status=="success"){
-                      console.log(data);
-                      
-                      //document.getElementById("error").innerText=data;
-                      if(data===""||data==null||data==" "||data=="    "){
-                          alert(data);
-                          
-                          //printJS('jala', 'html');
-                      }
-
-                  }
-              });
-
-              /*
           $.ajax({
               // Your server script to process the upload
               url: '../Control/Resultados.php',
@@ -98,6 +59,139 @@ $(document).ready(function(){
               // Custom XMLHttpRequest
               xhr: function () {
                 var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                  // For handling the progress of the upload
+                  /*
+                  myXhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                      $('progress').attr({
+                        value: e.loaded,
+                        max: e.total,
+                      });
+                    }
+                  }, false);*/
+                }
+                console.log(myXhr);
+                console.log(myXhr['response']);
+                //document.getElementById("resultado").innerText=myXhr['response'];
+                document.getElementById("accion").value=accion;
+                return myXhr;
+              },
+              success:function(r){
+                if(r=="Hubo un problema al subir la imagen."||r=="El archivo no es una imagen."){
+                  alert(r);
+                  document.getElementById("imagen1").value="";
+                  return;
+                  //document.getElementById("accion").value="guardar";
+                }
+                let nombreimg = imagen.replace("C:\\fakepath\\","");
+                document.getElementById("imgUsr1").src="../Uploads/Results/"+idorden+"&"+idestudio+"&"+nombreimg;
+                $('#rutaimg1').val("Uploads/Results/"+idorden+"&"+idestudio+"&"+nombreimg);
+                //
+                //window.location.reload();
+              }
+            });
+      });
+
+
+      $('#imagen2').on('change', function(){
+        var idorden = $('#idorden').val();
+        var idestudio = $('#idestudio').val();
+        var accion = $('#accion').val();
+        $('#accion').val("subirImg2");
+          var imagen = document.getElementById("imagen2").value;
+          console.log(imagen);
+          //var datos = new FormData();
+          //datos.append("imagen",imagen);
+          $.ajax({
+              // Your server script to process the upload
+              url: '../Control/Resultados.php',
+              type: 'POST',
+          
+              // Form data
+              data: new FormData($('form')[0]),
+          
+              // Tell jQuery not to process data or worry about content-type
+              // You *must* include these options!
+              cache: false,
+              contentType: false,
+              processData: false,
+          
+              // Custom XMLHttpRequest
+              xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                  // For handling the progress of the upload
+                  /*
+                  myXhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                      $('progress').attr({
+                        value: e.loaded,
+                        max: e.total,
+                      });
+                    }
+                  }, false);*/
+                }
+                console.log(myXhr);
+                console.log(myXhr['response']);
+                //document.getElementById("resultado").innerText=myXhr['response'];
+                document.getElementById("accion").value=accion;
+                return myXhr;
+              },
+              success:function(r){
+                if(r=="Hubo un problema al subir la imagen."||r=="El archivo no es una imagen."){
+                  alert(r);
+                  document.getElementById("imagen2").value="";
+                  return;
+                  //document.getElementById("accion").value="guardar";
+                }
+                //document.getElementById("resultado").innerText=r;
+                
+                let nombreimg = imagen.replace("C:\\fakepath\\","");
+                document.getElementById("imgUsr2").src="../Uploads/Results/"+idorden+"&"+idestudio+"&"+nombreimg;
+                $('#rutaimg2').val("Uploads/Results/"+idorden+"&"+idestudio+"&"+nombreimg);
+                //
+                //window.location.reload();
+              }
+            });
+      });
+
+      $('#guardarResultado').on('click', function(){
+          //var datos = new FormData();
+          //datos.append("imagen",imagen);
+          if(camposVacios()){
+            alert("Favor de llenar los campos necesarios");
+            return;
+          }
+          $.ajax({
+              // Your server script to process the upload
+              url: '../Control/Resultados.php',
+              type: 'POST',
+          
+              // Form data
+              data: new FormData($('form')[0]),
+          
+              // Tell jQuery not to process data or worry about content-type
+              // You *must* include these options!
+              cache: false,
+              contentType: false,
+              processData: false,
+          
+              // Custom XMLHttpRequest
+              xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                  // For handling the progress of the upload
+                  /*
+                  myXhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                      $('progress').attr({
+                        value: e.loaded,
+                        max: e.total,
+                      });
+                    }
+                  }, false);*/
+                }
                 console.log(myXhr);
                 console.log(myXhr['response']);
                 //document.getElementById("resultado").innerText=myXhr['response'];
@@ -121,7 +215,6 @@ $(document).ready(function(){
               }
               
             });
-            */
             
       });
 });
@@ -315,11 +408,14 @@ function buscarTabla(){
 }
 
 function camposVacios(){
-  let idOrden = document.getElementById("idorden").value;
+  let idOrden = document.getElementById("idOrden").value;
   let idEstudio         = document.getElementById("idestudio").value;
+  let idValor          = document.getElementById("valorReferencia").value;
+  let parametro    = document.getElementById("parametro").value;
   let resultado   = document.getElementById("resultado").value;
+  let unidad        = document.getElementById("unidad").value;
 
-    if( idOrden=="" ||idEstudio =="" || resultado=="" ){
+    if( idOrden=="" ||idEstudio =="" ||  idValor=="" || parametro=="" || resultado=="" ||unidad==""){
         return true;
     } else{
       return false;

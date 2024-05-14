@@ -18,8 +18,8 @@ if($accion=="guardar"){
     $user = $_SESSION['user'];
     $pass= $_SESSION['pass'];
     $d = new Conexion("localhost","laboratorio",$user,$pass);
-
-    $sqlcuenta = "INSERT INTO cuenta (usuario, password, tipousuario) values ('$usuario','$password', 'Empleado')";
+    $securePass = password_hash($password,PASSWORD_BCRYPT);
+    $sqlcuenta = "INSERT INTO cuenta (usuario, password, tipousuario) values ('$usuario','$securePasss', 'Empleado')";
     $error = $d->ejecutar($sqlcuenta);
     
     if($error=="1"){
@@ -55,7 +55,7 @@ if($accion=="guardar"){
     $user = $_SESSION['user'];
     $pass= $_SESSION['pass'];
     $d = new Conexion("localhost","laboratorio",$user,$pass);
-    
+    $securePass = password_hash($password,PASSWORD_BCRYPT);
     $sqlidCuenta = "SELECT idcuenta from empleado where idempleado = $id";
     $resultado = $d->ejecutar($sqlidCuenta);
     $reg = mysqli_fetch_array($resultado);
@@ -74,7 +74,7 @@ if($accion=="guardar"){
     }
 
 
-    $sqlEditCuenta = "UPDATE cuenta set usuario = '$usuario', password = '$password' where idcuenta = $idCuenta";
+    $sqlEditCuenta = "UPDATE cuenta set usuario = '$usuario', password = '$securePass' where idcuenta = $idCuenta";
     $error = $d->ejecutar($sqlEditCuenta);
 
     if($error=="1"){

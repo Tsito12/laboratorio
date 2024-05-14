@@ -29,7 +29,7 @@ include_once "../Modelo/Conexion.php";
         <div class="row">
             <div class="col">
                 <h6 class="d-none" id="idestudio"><?php echo($_SESSION['idorden'])?></h6>
-                <h6></h6>
+                
                 <h6>Folio no.<?php   echo($_SESSION['idorden'])      ?> </h6>
             </div>
             <div class="col">
@@ -181,7 +181,7 @@ include_once "../Modelo/Conexion.php";
 
         <div class="row mt-2">
             <div class="col-2">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost/Laboratorio/Resultados.php?orden=<?php echo($_SESSION['idorden'])?>&amp;size=100x100" alt="" title="" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?data=<?php echo($_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_ADDR"]."/Laboratorio/Resultados.php?orden=".$_SESSION["idorden"])?>&amp;size=100x100" alt="" title="" />
             </div>
             <div class="col">
                 <h6 id="restante"></h6>

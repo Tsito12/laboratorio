@@ -19,7 +19,7 @@ require_once "nav2.php"
 </head>
 <body >
     <div class="container mt-5" >
-        <form action="" method="POST" id="form">
+        <form action="" method="POST">
 
         
         <!--<p id="resultado"></p>-->

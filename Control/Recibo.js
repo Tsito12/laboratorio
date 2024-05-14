@@ -15,7 +15,7 @@ function llenarRecibo(){
     let horas = totalHoras();
     $('#msg').text("En aproximadamente "+horas+" horas escanee el siguente código QR para visualizar sus resultados");
     let idestudio = $('#idestudio').text();
-    $('#alt').text("O, desde cualquier navegador, ingrese a http://LaboratorioEPO.com/Resultados.php?orden="+idestudio);
+    $('#alt').text("O, desde cualquier navegador, ingrese a " +window.location.origin+ "/Laboratorio/Resultados.php?orden="+idestudio);
     
   }
 
